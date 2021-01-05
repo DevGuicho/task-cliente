@@ -8,6 +8,7 @@ const ListadoProyectos = () => {
 
   useEffect(() => {
     obtenerProyectos();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (proyectos.length === 0)

@@ -1,21 +1,18 @@
 import React, { Fragment, useContext } from "react";
 import proyectoContext from "../../context/proyectos/proyectoContext";
+import tareaContext from "../../context/tareas/tareaContext";
 import Tarea from "./Tarea";
 
 const ListadoTareas = () => {
   const proyectosContext = useContext(proyectoContext);
   const { proyecto, eliminarProyecto } = proyectosContext;
 
+  const tareasContext = useContext(tareaContext);
+  const { tareasProyecto } = tareasContext;
   if (!proyecto) return <h2>Selecciona un proyecto</h2>;
 
   const [proyectoActual] = proyecto;
 
-  const tareasProyecto = [
-    { nombre: "Elegir plataforma", estado: true, id: 1 },
-    { nombre: "Elegir plataforma de pago", estado: false, id: 2 },
-    { nombre: "Elegir plataforma", estado: true, id: 3 },
-    { nombre: "Elegir plataforma", estado: false, id: 4 },
-  ];
   return (
     <Fragment>
       <h2>Proyecto: {proyectoActual.nombre}</h2>

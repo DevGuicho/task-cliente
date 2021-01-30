@@ -5,6 +5,7 @@ import {
   VALIDAR_FORMULARIO,
   PROYECTO_ACTUAL,
   ELIMINAR_PROYECTO,
+  PROYECTO_ERROR,
 } from "../../types";
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -36,16 +37,21 @@ export default (state, action) => {
       return {
         ...state,
         proyecto: state.proyectos.filter(
-          (proyecto) => proyecto.id === action.payload.id
+          (proyecto) => proyecto._id === action.payload
         ),
       };
     case ELIMINAR_PROYECTO:
       return {
         ...state,
         proyectos: state.proyectos.filter(
-          (proyecto) => proyecto.id !== action.payload
+          (proyecto) => proyecto._id !== action.payload
         ),
         proyecto: null,
+      };
+    case PROYECTO_ERROR:
+      return {
+        ...state,
+        mensaje: action.payload,
       };
     default:
       return state;

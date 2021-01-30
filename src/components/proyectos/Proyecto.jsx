@@ -10,8 +10,8 @@ const Proyecto = ({ proyecto }) => {
   const { obtenerTareas } = tareasContext;
 
   const seleccionarProyecto = (proyecto) => {
-    proyectoActual(proyecto);
-    obtenerTareas(proyecto.id);
+    proyectoActual(proyecto._id);
+    obtenerTareas(proyecto._id);
   };
 
   return (

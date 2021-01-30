@@ -1,7 +1,23 @@
-import React, { useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import AlertaContext from "../../context/alertas/alertaContext";
+import AuthContext from "../../context/autenticacion/authContext";
 
-const NuevaCuenta = () => {
+const NuevaCuenta = ({ history }) => {
+  const alertaContext = useContext(AlertaContext);
+  const authContext = useContext(AuthContext);
+
+  const { alerta, mostrarAlerta } = alertaContext;
+  const { registrarUsuario, mensaje, autenticado } = authContext;
+
+  useEffect(() => {
+    if (autenticado) history.push("/proyectos");
+
+    if (mensaje) mostrarAlerta(mensaje.message, "alerta-error");
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mensaje, autenticado, history]);
+
   const [usuario, setUsuario] = useState({
     nombre: "",
     email: "",
@@ -17,9 +33,38 @@ const NuevaCuenta = () => {
   };
   const onSubmit = (e) => {
     e.preventDefault();
+
+    if (
+      nombre.trim() === "" ||
+      email.trim() === "" ||
+      password.trim() === "" ||
+      confirmar.trim() === ""
+    ) {
+      mostrarAlerta("Todos los campos son obligatorios", "alerta-error");
+    }
+
+    if (password.length < 6) {
+      mostrarAlerta(
+        "El password debe ser de almenos 6 caracteres",
+        "alerta-error"
+      );
+      return;
+    }
+    if (password !== confirmar) {
+      mostrarAlerta("Los passwords no son iguales", "alerta-error");
+      return;
+    }
+    registrarUsuario({
+      nombre,
+      email,
+      password,
+    });
   };
   return (
     <div className="form-usuario">
+      {alerta && (
+        <div className={`alerta ${alerta.categoria}`}>{alerta.message}</div>
+      )}
       <div className="contenedor-form sombra-dark">
         <h1>Obtener Cuenta</h1>
         <form onSubmit={onSubmit}>
